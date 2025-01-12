@@ -8,6 +8,30 @@ class Body {
     this.bounce = 0.8;
   }
 
+  collideWith(other) {
+    const distance = this.pos.sub(other.pos).mag();
+    const minDist = this.radius + other.radius;
+
+    if (distance < minDist) {
+      const normal = this.pos.sub(other.pos).normalize();
+
+      const relativeVel = this.vel.sub(other.vel);
+
+      const restitution = 0.8;
+      const impulseMag =
+        (-(1 + restitution) * relativeVel.dot(normal)) /
+        (1 / this.mass + 1 / other.mass);
+
+      this.vel = this.vel.add(normal.mult(impulseMag / this.mass));
+      other.vel = other.vel.sub(normal.mult(impulseMag / other.mass));
+
+      // Separate the circles
+      const correction = normal.mult((minDist - distance) * 0.5);
+      this.pos = this.pos.add(correction);
+      other.pos = other.pos.sub(correction);
+    }
+  }
+
   update() {
     this.vel = this.vel.add(this.acc);
     this.pos = this.pos.add(this.vel);

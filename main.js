@@ -4,11 +4,15 @@ canvas.height = 600;
 
 const world = new World(canvas);
 
-world.addBody(new Body(400, 100, 20));
-let b2 = new Body(300, 200, 15);
-b2.vel = new Vector(5, -2);
-world.addBody(b2);
-
+for (let i = 0; i < 10; i++) {
+  let body = new Body(
+    Math.random() * canvas.width,
+    Math.random() * canvas.height,
+    10 + Math.random() * 20
+  );
+  body.vel = new Vector((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10);
+  world.addBody(body);
+}
 function gameLoop() {
   world.update();
   world.draw();

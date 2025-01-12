@@ -12,6 +12,12 @@ class World {
       body.update();
       body.checkBounds(this.canvas.width, this.canvas.height);
     }
+
+    for (let i = 0; i < this.bodies.length; i++) {
+      for (let j = i + 1; j < this.bodies.length; j++) {
+        this.bodies[i].collideWith(this.bodies[j]);
+      }
+    }
   }
 
   addBody(body) {
